@@ -1,0 +1,43 @@
+{
+  "name": "fastify_server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "dotenv -e .env.dev -- tsx watch src/server.ts",
+    "dev:prod": "dotenv -e .env.prod -- tsx watch src/server.ts",
+    "build": "tsc -p tsconfig.json && tsc-alias -p tsconfig.json --resolve-full-paths --resolve-full-extension .js",
+    "start": "dotenv -e .env.prod -- node dist/server.js",
+    "format": "prettier . --write",
+    "prepare:hooks": "git config core.hooksPath .githooks",
+    "db:push:dev": "dotenv -e .env.dev -- drizzle-kit push",
+    "db:push:prod": "dotenv -e .env.prod -- drizzle-kit push"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@fastify/autoload": "^6.3.1",
+    "@fastify/jwt": "^10.1.0",
+    "@fastify/multipart": "^10.0.0",
+    "@fastify/redis": "^7.2.0",
+    "@fastify/routes": "^6.0.2",
+    "@fastify/swagger": "^9.7.0",
+    "@scalar/fastify-api-reference": "^1.58.0",
+    "drizzle-orm": "^0.45.2",
+    "fastify": "^5.8.5",
+    "fastify-plugin": "^5.1.0",
+    "fastify-type-provider-zod": "^6.1.0",
+    "pino": "^10.3.1",
+    "pino-abstract-transport": "^3.0.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.2",
+    "dotenv-cli": "^11.0.0",
+    "drizzle-kit": "^0.31.10",
+    "prettier": "^3.8.3",
+    "tsc-alias": "^1.8.17",
+    "tsx": "^4.22.4",
+    "typescript": "^6.0.3"
+  }
+}
