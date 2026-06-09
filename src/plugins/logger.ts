@@ -30,5 +30,5 @@ async function logger(fastify: FastifyInstance) {
 }
 
 export default fp(logger, {
-  name: "req-logger-res",
+  name: "req-logger-res-plugin",
 });
