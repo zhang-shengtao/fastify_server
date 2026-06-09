@@ -21,7 +21,7 @@ export const adminMenus = mysqlTable("admin_menus", {
   status: varchar("status", { length: 20 }).notNull().default("normal"), // 状态
   // 扩展元数据，存储前端需要的其他非标准字段
   meta: json("meta"),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow().notNull(),
-  deletedAt: timestamp("deleted_at"), // 软删除
+  created_at: timestamp("created_at").defaultNow().notNull(), // 创建时间
+  updated_at: timestamp("updated_at").defaultNow().notNull(), // 更新时间
+  deleted_at: timestamp("deleted_at"), // 软删除时间
 });
