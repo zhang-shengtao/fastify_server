@@ -11,7 +11,7 @@ async function swaggerPlugin(fastify: FastifyInstance) {
     openapi: {
       openapi: "3.0.3",
       info: {
-        title: "Fastify Server API",
+        title: "模板项目接口文档",
         description: "接口文档",
         version: "0.1.0",
       },
@@ -59,5 +59,5 @@ async function swaggerPlugin(fastify: FastifyInstance) {
 }
 
 export default fp(swaggerPlugin, {
-  name: "swagger-plugin",
+  name: "swagger_plugin",
 });

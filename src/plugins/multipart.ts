@@ -12,5 +12,5 @@ async function multipartPlugin(fastify: FastifyInstance) {
 }
 
 export default fp(multipartPlugin, {
-  name: "multipart-plugin",
+  name: "multipart_plugin",
 });

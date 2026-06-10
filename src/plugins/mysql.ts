@@ -26,4 +26,4 @@ async function mysqlPlugin(fastify: FastifyInstance) {
   });
 }
 
-export default fp(mysqlPlugin, { name: "mysql-plugin" });
+export default fp(mysqlPlugin, { name: "mysql_plugin" });

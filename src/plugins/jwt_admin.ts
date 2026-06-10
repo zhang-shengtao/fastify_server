@@ -44,5 +44,5 @@ async function adminJwtPlugin(fastify: FastifyInstance) {
 }
 
 export default fp(adminJwtPlugin, {
-  name: "admin-jwt-plugin",
+  name: "admin_jwt_plugin",
 });

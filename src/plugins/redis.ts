@@ -16,5 +16,5 @@ async function redisPlugin(fastify: FastifyInstance) {
 }
 
 export default fp(redisPlugin, {
-  name: "redis-plugin",
+  name: "redis_plugin",
 });

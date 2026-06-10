@@ -43,5 +43,5 @@ async function userJwtPlugin(fastify: FastifyInstance) {
 }
 
 export default fp(userJwtPlugin, {
-  name: "user-jwt-plugin",
+  name: "user_jwt_plugin",
 });
