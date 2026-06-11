@@ -95,16 +95,16 @@ UPLOAD_MAX_FILE_SIZE=10485760  # 10MB
 
 ## 📦 npm 脚本
 
-| 命令 | 描述 |
-|------|------|
-| `npm run dev` | 开发模式 (使用 .env.dev) |
-| `npm run dev:prod` | 生产环境开发模式 (使用 .env.prod) |
-| `npm run build` | 编译 TypeScript 到 JavaScript |
-| `npm start` | 启动生产服务器 |
-| `npm run format` | 使用 Prettier 格式化代码 |
-| `npm run db:push:dev` | 推送数据库迁移 (开发) |
-| `npm run db:push:prod` | 推送数据库迁移 (生产) |
-| `npm run prepare:hooks` | 配置 Git hooks |
+| 命令                    | 描述                              |
+| ----------------------- | --------------------------------- |
+| `npm run dev`           | 开发模式 (使用 .env.dev)          |
+| `npm run dev:prod`      | 生产环境开发模式 (使用 .env.prod) |
+| `npm run build`         | 编译 TypeScript 到 JavaScript     |
+| `npm start`             | 启动生产服务器                    |
+| `npm run format`        | 使用 Prettier 格式化代码          |
+| `npm run db:push:dev`   | 推送数据库迁移 (开发)             |
+| `npm run db:push:prod`  | 推送数据库迁移 (生产)             |
+| `npm run prepare:hooks` | 配置 Git hooks                    |
 
 ## 🚀 快速开始
 
@@ -161,14 +161,14 @@ npm run format
 
 ## 🔌 核心插件
 
-| 插件 | 功能 |
-|------|------|
-| `@fastify/jwt` | JWT 认证 |
-| `@fastify/redis` | Redis 集成 |
-| `@fastify/swagger` | Swagger 文档 |
-| `@scalar/fastify-api-reference` | API 参考文档 |
-| `@fastify/multipart` | 文件上传处理 |
-| `@fastify/autoload` | 自动加载路由/插件 |
+| 插件                            | 功能              |
+| ------------------------------- | ----------------- |
+| `@fastify/jwt`                  | JWT 认证          |
+| `@fastify/redis`                | Redis 集成        |
+| `@fastify/swagger`              | Swagger 文档      |
+| `@scalar/fastify-api-reference` | API 参考文档      |
+| `@fastify/multipart`            | 文件上传处理      |
+| `@fastify/autoload`             | 自动加载路由/插件 |
 
 ## 📊 日志
 

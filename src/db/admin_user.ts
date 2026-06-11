@@ -15,4 +15,4 @@ export const admin_user = mysqlTable("admin_user", {
   deleted_at: timestamp("deleted_at"), // 软删除时间
 });
 
-export type PermissionsType = typeof admin_user.$inferSelect;
+export type AdminUser = typeof admin_user.$inferSelect;

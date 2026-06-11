@@ -16,10 +16,11 @@ async function userJwtPlugin(fastify: FastifyInstance) {
       allowedIss: env.JWT_ISSUER_USER,
     },
   });
+
   fastify.addHook("preHandler", async (request, reply) => {
     if (!request.url.startsWith("/api")) return;
-    const routeConfig = request.routeOptions.config;
-    if (routeConfig?.isAuth === false) return;
+    const config = request.routeOptions.schema?.config;
+    if (config?.is_auth === false) return;
     try {
       const authorization = request.headers.authorization;
       if (!authorization) throw new AppError(BusinessCode.UNAUTHORIZED, "授权失败请登录");
@@ -27,7 +28,7 @@ async function userJwtPlugin(fastify: FastifyInstance) {
       if (scheme !== "Bearer" || !token) {
         throw new AppError(BusinessCode.UNAUTHORIZED, "授权失败请登录");
       }
-      const payload = fastify.userJwtVerify<JwtPayload>(token);
+      const payload = fastify.jwt.user.verify<JwtPayload>(token);
       if (!payload?.uid) {
         throw new AppError(BusinessCode.UNAUTHORIZED, "授权失败请登录");
       }

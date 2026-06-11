@@ -1,5 +1,5 @@
 import type {
-  FastifyBaseLogger,
+  FastifyBaseLogger as FastifyBaseLoggerBase,
   FastifyInstance as FastifyInstanceBase,
   FastifyReply as FastifyReplyBase,
   FastifyRequest as FastifyRequestBase,
@@ -7,7 +7,7 @@ import type {
   RawRequestDefaultExpression,
   RawServerDefault,
 } from "fastify";
-import type { FastifyJwtNamespace } from "@fastify/jwt";
+import type { FastifyJwtNamespace, JWT } from "@fastify/jwt";
 import type { FastifyRedis } from "@fastify/redis";
 import type { MySql2Database } from "drizzle-orm/mysql2";
 import type { ZodTypeProvider } from "fastify-type-provider-zod";
@@ -15,20 +15,29 @@ import type { BusinessCode } from "@/common/app-error";
 import type { JwtPayload } from "./auth";
 import { PermissionCode } from "@/permissions";
 
+type JwtNamespace = Omit<JWT, "admin" | "user">;
 declare module "@fastify/jwt" {
   interface FastifyJWT {
     payload: JwtPayload;
   }
+  interface JWT {
+    admin: JwtNamespace;
+    user: JwtNamespace;
+  }
 }
 
 declare module "fastify" {
-  interface FastifyContextConfig {
-    isAuth?: boolean;
-    permission?: PermissionCode;
+  interface FastifySchema {
+    config?: {
+      is_auth?: boolean;
+      permission?: PermissionCode;
+    };
   }
-  interface FastifyInstance extends FastifyJwtNamespace<{ namespace: "admin" }>, FastifyJwtNamespace<{ namespace: "user" }> {
+
+  interface FastifyInstance {
     redis: FastifyRedis;
     db: MySql2Database;
+    user?: JwtPayload;
   }
 
   interface FastifyReply {
@@ -42,9 +51,10 @@ declare global {
     RawServerDefault,
     RawRequestDefaultExpression<RawServerDefault>,
     RawReplyDefaultExpression<RawServerDefault>,
-    FastifyBaseLogger,
+    FastifyBaseLoggerBase,
     ZodTypeProvider
   >;
   type FastifyRequest = FastifyRequestBase;
   type FastifyReply = FastifyReplyBase;
+  type FastifyBaseLogger = FastifyBaseLoggerBase;
 }

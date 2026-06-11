@@ -20,15 +20,15 @@
 示例：
 
 ```ts
-import accepts from '@fastify/accepts'
+import accepts from "@fastify/accepts";
 
-await fastify.register(accepts)
+await fastify.register(accepts);
 
-fastify.get('/format', async (request, reply) => {
-  const type = request.accepts().type(['json', 'html'])
-  if (type === 'html') return reply.type('text/html').send('<b>ok</b>')
-  return reply.send({ ok: true })
-})
+fastify.get("/format", async (request, reply) => {
+  const type = request.accepts().type(["json", "html"]);
+  if (type === "html") return reply.type("text/html").send("<b>ok</b>");
+  return reply.send({ ok: true });
+});
 ```
 
 ## 2. @fastify/accepts-serializer
@@ -42,17 +42,15 @@ fastify.get('/format', async (request, reply) => {
 示例：
 
 ```ts
-import acceptsSerializer from '@fastify/accepts-serializer'
-import YAML from 'yamljs'
+import acceptsSerializer from "@fastify/accepts-serializer";
+import YAML from "yamljs";
 
 await fastify.register(acceptsSerializer, {
-  serializers: [
-    { regex: /^application\/yaml$/, serializer: body => YAML.stringify(body) }
-  ],
-  default: 'application/yaml'
-})
+  serializers: [{ regex: /^application\/yaml$/, serializer: (body) => YAML.stringify(body) }],
+  default: "application/yaml",
+});
 
-fastify.get('/data', async () => ({ hello: 'world' }))
+fastify.get("/data", async () => ({ hello: "world" }));
 ```
 
 ## 3. @fastify/auth
@@ -66,17 +64,21 @@ fastify.get('/data', async () => ({ hello: 'world' }))
 示例：
 
 ```ts
-import auth from '@fastify/auth'
+import auth from "@fastify/auth";
 
-fastify.decorate('verifyApiKey', async request => {
-  if (request.headers['x-api-key'] !== process.env.API_KEY) throw new Error('unauthorized')
-})
+fastify.decorate("verifyApiKey", async (request) => {
+  if (request.headers["x-api-key"] !== process.env.API_KEY) throw new Error("unauthorized");
+});
 
-await fastify.register(auth)
+await fastify.register(auth);
 
-fastify.get('/admin', {
-  preHandler: fastify.auth([fastify.verifyApiKey])
-}, async () => ({ ok: true }))
+fastify.get(
+  "/admin",
+  {
+    preHandler: fastify.auth([fastify.verifyApiKey]),
+  },
+  async () => ({ ok: true }),
+);
 ```
 
 ## 4. @fastify/autoload
@@ -90,12 +92,12 @@ fastify.get('/admin', {
 示例：
 
 ```ts
-import autoload from '@fastify/autoload'
-import { dirname, join } from 'node:path'
-import { fileURLToPath } from 'node:url'
+import autoload from "@fastify/autoload";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const root = dirname(fileURLToPath(import.meta.url))
-await fastify.register(autoload, { dir: join(root, 'routes') })
+const root = dirname(fileURLToPath(import.meta.url));
+await fastify.register(autoload, { dir: join(root, "routes") });
 ```
 
 ## 5. @fastify/awilix
@@ -109,18 +111,18 @@ await fastify.register(autoload, { dir: join(root, 'routes') })
 示例：
 
 ```ts
-import { fastifyAwilixPlugin, diContainer } from '@fastify/awilix'
-import { asValue } from 'awilix'
+import { fastifyAwilixPlugin, diContainer } from "@fastify/awilix";
+import { asValue } from "awilix";
 
-await fastify.register(fastifyAwilixPlugin, { disposeOnClose: true })
+await fastify.register(fastifyAwilixPlugin, { disposeOnClose: true });
 
 diContainer.register({
-  config: asValue({ serviceName: 'api' })
-})
+  config: asValue({ serviceName: "api" }),
+});
 
-fastify.get('/di', async request => {
-  return request.diScope.resolve('config')
-})
+fastify.get("/di", async (request) => {
+  return request.diScope.resolve("config");
+});
 ```
 
 ## 6. @fastify/aws-lambda
@@ -134,11 +136,11 @@ fastify.get('/di', async request => {
 示例：
 
 ```ts
-import awsLambdaFastify from '@fastify/aws-lambda'
+import awsLambdaFastify from "@fastify/aws-lambda";
 
-fastify.get('/health', async () => ({ ok: true }))
+fastify.get("/health", async () => ({ ok: true }));
 
-export const handler = awsLambdaFastify(fastify)
+export const handler = awsLambdaFastify(fastify);
 ```
 
 ## 7. @fastify/basic-auth
@@ -152,17 +154,17 @@ export const handler = awsLambdaFastify(fastify)
 示例：
 
 ```ts
-import basicAuth from '@fastify/basic-auth'
+import basicAuth from "@fastify/basic-auth";
 
 await fastify.register(basicAuth, {
   validate: async (username, password) => {
-    if (username !== 'admin' || password !== process.env.ADMIN_PASSWORD) {
-      throw new Error('invalid credentials')
+    if (username !== "admin" || password !== process.env.ADMIN_PASSWORD) {
+      throw new Error("invalid credentials");
     }
-  }
-})
+  },
+});
 
-fastify.get('/private', { onRequest: fastify.basicAuth }, async () => ({ ok: true }))
+fastify.get("/private", { onRequest: fastify.basicAuth }, async () => ({ ok: true }));
 ```
 
 ## 8. @fastify/bearer-auth
@@ -176,13 +178,13 @@ fastify.get('/private', { onRequest: fastify.basicAuth }, async () => ({ ok: tru
 示例：
 
 ```ts
-import bearerAuth from '@fastify/bearer-auth'
+import bearerAuth from "@fastify/bearer-auth";
 
 await fastify.register(bearerAuth, {
-  keys: new Set([process.env.API_TOKEN!])
-})
+  keys: new Set([process.env.API_TOKEN!]),
+});
 
-fastify.get('/token-only', async () => ({ ok: true }))
+fastify.get("/token-only", async () => ({ ok: true }));
 ```
 
 ## 9. @fastify/caching
@@ -196,17 +198,17 @@ fastify.get('/token-only', async () => ({ ok: true }))
 示例：
 
 ```ts
-import caching from '@fastify/caching'
+import caching from "@fastify/caching";
 
 await fastify.register(caching, {
   privacy: caching.privacy.PUBLIC,
-  expiresIn: 60
-})
+  expiresIn: 60,
+});
 
-fastify.get('/cached', async (request, reply) => {
-  reply.etag('v1')
-  return { ok: true }
-})
+fastify.get("/cached", async (request, reply) => {
+  reply.etag("v1");
+  return { ok: true };
+});
 ```
 
 ## 10. @fastify/circuit-breaker
@@ -220,17 +222,17 @@ fastify.get('/cached', async (request, reply) => {
 示例：
 
 ```ts
-import circuitBreaker from '@fastify/circuit-breaker'
+import circuitBreaker from "@fastify/circuit-breaker";
 
 await fastify.register(circuitBreaker, {
   threshold: 5,
   timeout: 3000,
-  resetTimeout: 10000
-})
+  resetTimeout: 10000,
+});
 
-fastify.get('/remote', { circuitBreaker: true }, async () => {
-  return { from: 'upstream' }
-})
+fastify.get("/remote", { circuitBreaker: true }, async () => {
+  return { from: "upstream" };
+});
 ```
 
 ## 11. @fastify/compress
@@ -244,14 +246,14 @@ fastify.get('/remote', { circuitBreaker: true }, async () => {
 示例：
 
 ```ts
-import compress from '@fastify/compress'
+import compress from "@fastify/compress";
 
 await fastify.register(compress, {
   global: true,
-  threshold: 1024
-})
+  threshold: 1024,
+});
 
-fastify.get('/large-json', async () => ({ items: Array.from({ length: 1000 }, (_, i) => i) }))
+fastify.get("/large-json", async () => ({ items: Array.from({ length: 1000 }, (_, i) => i) }));
 ```
 
 ## 12. @fastify/cookie
@@ -265,16 +267,16 @@ fastify.get('/large-json', async () => ({ items: Array.from({ length: 1000 }, (_
 示例：
 
 ```ts
-import cookie from '@fastify/cookie'
+import cookie from "@fastify/cookie";
 
 await fastify.register(cookie, {
-  secret: process.env.COOKIE_SECRET
-})
+  secret: process.env.COOKIE_SECRET,
+});
 
-fastify.get('/cookie', async (request, reply) => {
-  reply.setCookie('sid', '123', { path: '/', httpOnly: true, signed: true })
-  return { sid: request.cookies.sid }
-})
+fastify.get("/cookie", async (request, reply) => {
+  reply.setCookie("sid", "123", { path: "/", httpOnly: true, signed: true });
+  return { sid: request.cookies.sid };
+});
 ```
 
 ## 13. @fastify/cors
@@ -288,12 +290,12 @@ fastify.get('/cookie', async (request, reply) => {
 示例：
 
 ```ts
-import cors from '@fastify/cors'
+import cors from "@fastify/cors";
 
 await fastify.register(cors, {
-  origin: ['https://admin.example.com'],
-  credentials: true
-})
+  origin: ["https://admin.example.com"],
+  credentials: true,
+});
 ```
 
 ## 14. @fastify/csrf-protection
@@ -307,14 +309,14 @@ await fastify.register(cors, {
 示例：
 
 ```ts
-import cookie from '@fastify/cookie'
-import csrf from '@fastify/csrf-protection'
+import cookie from "@fastify/cookie";
+import csrf from "@fastify/csrf-protection";
 
-await fastify.register(cookie, { secret: process.env.COOKIE_SECRET })
-await fastify.register(csrf, { cookieOpts: { signed: true, httpOnly: true } })
+await fastify.register(cookie, { secret: process.env.COOKIE_SECRET });
+await fastify.register(csrf, { cookieOpts: { signed: true, httpOnly: true } });
 
-fastify.get('/csrf-token', async (request, reply) => ({ token: await reply.generateCsrf() }))
-fastify.post('/form', { onRequest: fastify.csrfProtection }, async request => request.body)
+fastify.get("/csrf-token", async (request, reply) => ({ token: await reply.generateCsrf() }));
+fastify.post("/form", { onRequest: fastify.csrfProtection }, async (request) => request.body);
 ```
 
 ## 15. @fastify/elasticsearch
@@ -328,15 +330,15 @@ fastify.post('/form', { onRequest: fastify.csrfProtection }, async request => re
 示例：
 
 ```ts
-import elasticsearch from '@fastify/elasticsearch'
+import elasticsearch from "@fastify/elasticsearch";
 
 await fastify.register(elasticsearch, {
-  node: process.env.ELASTICSEARCH_URL
-})
+  node: process.env.ELASTICSEARCH_URL,
+});
 
-fastify.get('/search', async function () {
-  return this.elastic.search({ index: 'logs', query: { match_all: {} } })
-})
+fastify.get("/search", async function () {
+  return this.elastic.search({ index: "logs", query: { match_all: {} } });
+});
 ```
 
 ## 16. @fastify/env
@@ -350,20 +352,20 @@ fastify.get('/search', async function () {
 示例：
 
 ```ts
-import env from '@fastify/env'
+import env from "@fastify/env";
 
 await fastify.register(env, {
   schema: {
-    type: 'object',
-    required: ['JWT_SECRET'],
+    type: "object",
+    required: ["JWT_SECRET"],
     properties: {
-      JWT_SECRET: { type: 'string' }
-    }
+      JWT_SECRET: { type: "string" },
+    },
   },
-  dotenv: true
-})
+  dotenv: true,
+});
 
-fastify.log.info(fastify.config.JWT_SECRET.length)
+fastify.log.info(fastify.config.JWT_SECRET.length);
 ```
 
 ## 17. @fastify/etag
@@ -377,11 +379,11 @@ fastify.log.info(fastify.config.JWT_SECRET.length)
 示例：
 
 ```ts
-import etag from '@fastify/etag'
+import etag from "@fastify/etag";
 
-await fastify.register(etag)
+await fastify.register(etag);
 
-fastify.get('/profile-template', async () => ({ version: 1 }))
+fastify.get("/profile-template", async () => ({ version: 1 }));
 ```
 
 ## 18. @fastify/express
@@ -395,11 +397,11 @@ fastify.get('/profile-template', async () => ({ version: 1 }))
 示例：
 
 ```ts
-import expressPlugin from '@fastify/express'
-import helmet from 'helmet'
+import expressPlugin from "@fastify/express";
+import helmet from "helmet";
 
-await fastify.register(expressPlugin)
-fastify.use(helmet())
+await fastify.register(expressPlugin);
+fastify.use(helmet());
 ```
 
 ## 19. @fastify/flash
@@ -413,14 +415,14 @@ fastify.use(helmet())
 示例：
 
 ```ts
-import flash from '@fastify/flash'
+import flash from "@fastify/flash";
 
-await fastify.register(flash)
+await fastify.register(flash);
 
-fastify.post('/login', async (request, reply) => {
-  request.flash('info', 'login success')
-  return reply.redirect('/dashboard')
-})
+fastify.post("/login", async (request, reply) => {
+  request.flash("info", "login success");
+  return reply.redirect("/dashboard");
+});
 ```
 
 ## 20. @fastify/formbody
@@ -434,13 +436,13 @@ fastify.post('/login', async (request, reply) => {
 示例：
 
 ```ts
-import formbody from '@fastify/formbody'
+import formbody from "@fastify/formbody";
 
-await fastify.register(formbody)
+await fastify.register(formbody);
 
-fastify.post('/login', async request => {
-  return request.body
-})
+fastify.post("/login", async (request) => {
+  return request.body;
+});
 ```
 
 ## 21. @fastify/funky
@@ -454,11 +456,11 @@ fastify.post('/login', async request => {
 示例：
 
 ```ts
-import funky from '@fastify/funky'
+import funky from "@fastify/funky";
 
-await fastify.register(funky)
+await fastify.register(funky);
 
-fastify.get('/lazy', async () => () => ({ ok: true }))
+fastify.get("/lazy", async () => () => ({ ok: true }));
 ```
 
 ## 22. @fastify/helmet
@@ -472,11 +474,11 @@ fastify.get('/lazy', async () => () => ({ ok: true }))
 示例：
 
 ```ts
-import helmet from '@fastify/helmet'
+import helmet from "@fastify/helmet";
 
 await fastify.register(helmet, {
-  contentSecurityPolicy: false
-})
+  contentSecurityPolicy: false,
+});
 ```
 
 ## 23. @fastify/hotwire
@@ -490,13 +492,13 @@ await fastify.register(helmet, {
 示例：
 
 ```ts
-import hotwire from '@fastify/hotwire'
+import hotwire from "@fastify/hotwire";
 
-await fastify.register(hotwire)
+await fastify.register(hotwire);
 
-fastify.get('/', async (request, reply) => {
-  return reply.type('text/html').send('<turbo-frame id="main">hello</turbo-frame>')
-})
+fastify.get("/", async (request, reply) => {
+  return reply.type("text/html").send('<turbo-frame id="main">hello</turbo-frame>');
+});
 ```
 
 ## 24. @fastify/http-proxy
@@ -510,13 +512,13 @@ fastify.get('/', async (request, reply) => {
 示例：
 
 ```ts
-import httpProxy from '@fastify/http-proxy'
+import httpProxy from "@fastify/http-proxy";
 
 await fastify.register(httpProxy, {
-  upstream: 'http://127.0.0.1:4000',
-  prefix: '/api',
-  rewritePrefix: '/'
-})
+  upstream: "http://127.0.0.1:4000",
+  prefix: "/api",
+  rewritePrefix: "/",
+});
 ```
 
 ## 25. @fastify/jwt
@@ -530,17 +532,21 @@ await fastify.register(httpProxy, {
 示例：
 
 ```ts
-import jwt from '@fastify/jwt'
+import jwt from "@fastify/jwt";
 
-await fastify.register(jwt, { secret: process.env.JWT_SECRET! })
+await fastify.register(jwt, { secret: process.env.JWT_SECRET! });
 
-fastify.post('/token', async request => {
-  return { token: fastify.jwt.sign({ sub: 'user-1' }) }
-})
+fastify.post("/token", async (request) => {
+  return { token: fastify.jwt.sign({ sub: "user-1" }) };
+});
 
-fastify.get('/me', {
-  onRequest: async request => request.jwtVerify()
-}, async request => request.user)
+fastify.get(
+  "/me",
+  {
+    onRequest: async (request) => request.jwtVerify(),
+  },
+  async (request) => request.user,
+);
 ```
 
 ## 26. @fastify/kafka
@@ -554,16 +560,16 @@ fastify.get('/me', {
 示例：
 
 ```ts
-import kafka from '@fastify/kafka'
+import kafka from "@fastify/kafka";
 
 await fastify.register(kafka, {
-  clientConfig: { brokers: ['127.0.0.1:9092'] }
-})
+  clientConfig: { brokers: ["127.0.0.1:9092"] },
+});
 
-fastify.post('/events', async function (request) {
-  await this.kafka.producer.send({ topic: 'events', messages: [{ value: JSON.stringify(request.body) }] })
-  return { ok: true }
-})
+fastify.post("/events", async function (request) {
+  await this.kafka.producer.send({ topic: "events", messages: [{ value: JSON.stringify(request.body) }] });
+  return { ok: true };
+});
 ```
 
 ## 27. @fastify/leveldb
@@ -577,13 +583,13 @@ fastify.post('/events', async function (request) {
 示例：
 
 ```ts
-import leveldb from '@fastify/leveldb'
+import leveldb from "@fastify/leveldb";
 
-await fastify.register(leveldb, { name: 'db', path: './data/level' })
+await fastify.register(leveldb, { name: "db", path: "./data/level" });
 
-fastify.get('/kv/:key', async function (request) {
-  return { value: await this.level.db.get(request.params.key) }
-})
+fastify.get("/kv/:key", async function (request) {
+  return { value: await this.level.db.get(request.params.key) };
+});
 ```
 
 ## 28. @fastify/middie
@@ -597,14 +603,14 @@ fastify.get('/kv/:key', async function (request) {
 示例：
 
 ```ts
-import middie from '@fastify/middie'
+import middie from "@fastify/middie";
 
-await fastify.register(middie)
+await fastify.register(middie);
 
 fastify.use((req, res, next) => {
-  req.headers['x-from-middleware'] = '1'
-  next()
-})
+  req.headers["x-from-middleware"] = "1";
+  next();
+});
 ```
 
 ## 29. @fastify/mongodb
@@ -618,15 +624,15 @@ fastify.use((req, res, next) => {
 示例：
 
 ```ts
-import mongodb from '@fastify/mongodb'
+import mongodb from "@fastify/mongodb";
 
 await fastify.register(mongodb, {
-  url: process.env.MONGO_URL
-})
+  url: process.env.MONGO_URL,
+});
 
-fastify.get('/users', async function () {
-  return this.mongo.db!.collection('users').find({}).limit(10).toArray()
-})
+fastify.get("/users", async function () {
+  return this.mongo.db!.collection("users").find({}).limit(10).toArray();
+});
 ```
 
 ## 30. @fastify/multipart
@@ -640,20 +646,20 @@ fastify.get('/users', async function () {
 示例：
 
 ```ts
-import multipart from '@fastify/multipart'
-import { pipeline } from 'node:stream/promises'
-import { createWriteStream } from 'node:fs'
+import multipart from "@fastify/multipart";
+import { pipeline } from "node:stream/promises";
+import { createWriteStream } from "node:fs";
 
 await fastify.register(multipart, {
-  limits: { fileSize: 5 * 1024 * 1024, files: 1 }
-})
+  limits: { fileSize: 5 * 1024 * 1024, files: 1 },
+});
 
-fastify.post('/upload', async request => {
-  const file = await request.file()
-  if (!file) return { ok: false }
-  await pipeline(file.file, createWriteStream(`./uploads/${file.filename}`))
-  return { ok: true }
-})
+fastify.post("/upload", async (request) => {
+  const file = await request.file();
+  if (!file) return { ok: false };
+  await pipeline(file.file, createWriteStream(`./uploads/${file.filename}`));
+  return { ok: true };
+});
 ```
 
 ## 31. @fastify/mysql
@@ -667,17 +673,17 @@ fastify.post('/upload', async request => {
 示例：
 
 ```ts
-import mysql from '@fastify/mysql'
+import mysql from "@fastify/mysql";
 
 await fastify.register(mysql, {
   connectionString: process.env.MYSQL_URL,
-  promise: true
-})
+  promise: true,
+});
 
-fastify.get('/users', async function () {
-  const [rows] = await this.mysql.query('select id, name from users limit ?', [10])
-  return rows
-})
+fastify.get("/users", async function () {
+  const [rows] = await this.mysql.query("select id, name from users limit ?", [10]);
+  return rows;
+});
 ```
 
 ## 32. @fastify/nextjs
@@ -691,11 +697,11 @@ fastify.get('/users', async function () {
 示例：
 
 ```ts
-import nextjs from '@fastify/nextjs'
+import nextjs from "@fastify/nextjs";
 
-await fastify.register(nextjs)
+await fastify.register(nextjs);
 
-fastify.next('/app')
+fastify.next("/app");
 ```
 
 ## 33. @fastify/oauth2
@@ -709,17 +715,17 @@ fastify.next('/app')
 示例：
 
 ```ts
-import oauth2 from '@fastify/oauth2'
+import oauth2 from "@fastify/oauth2";
 
 await fastify.register(oauth2, {
-  name: 'githubOAuth2',
+  name: "githubOAuth2",
   credentials: {
     client: { id: process.env.GITHUB_CLIENT_ID!, secret: process.env.GITHUB_CLIENT_SECRET! },
-    auth: oauth2.GITHUB_CONFIGURATION
+    auth: oauth2.GITHUB_CONFIGURATION,
   },
-  startRedirectPath: '/login/github',
-  callbackUri: 'http://localhost:3000/login/github/callback'
-})
+  startRedirectPath: "/login/github",
+  callbackUri: "http://localhost:3000/login/github/callback",
+});
 ```
 
 ## 34. @fastify/one-line-logger
@@ -733,13 +739,13 @@ await fastify.register(oauth2, {
 示例：
 
 ```ts
-import Fastify from 'fastify'
+import Fastify from "fastify";
 
 const fastify = Fastify({
   logger: {
-    transport: { target: '@fastify/one-line-logger', colorize: false }
-  }
-})
+    transport: { target: "@fastify/one-line-logger", colorize: false },
+  },
+});
 ```
 
 ## 35. @fastify/otel
@@ -753,13 +759,13 @@ const fastify = Fastify({
 示例：
 
 ```ts
-import FastifyOtelInstrumentation from '@fastify/otel'
+import FastifyOtelInstrumentation from "@fastify/otel";
 
 const otel = new FastifyOtelInstrumentation({
-  ignorePaths: opts => opts.url === '/health'
-})
+  ignorePaths: (opts) => opts.url === "/health",
+});
 
-await fastify.register(otel.plugin())
+await fastify.register(otel.plugin());
 ```
 
 ## 36. @fastify/passport
@@ -773,14 +779,18 @@ await fastify.register(otel.plugin())
 示例：
 
 ```ts
-import passport from '@fastify/passport'
+import passport from "@fastify/passport";
 
-await fastify.register(passport.initialize())
-await fastify.register(passport.secureSession())
+await fastify.register(passport.initialize());
+await fastify.register(passport.secureSession());
 
-fastify.get('/login', {
-  preValidation: passport.authenticate('local', { authInfo: false })
-}, async () => ({ ok: true }))
+fastify.get(
+  "/login",
+  {
+    preValidation: passport.authenticate("local", { authInfo: false }),
+  },
+  async () => ({ ok: true }),
+);
 ```
 
 ## 37. @fastify/postgres
@@ -794,16 +804,16 @@ fastify.get('/login', {
 示例：
 
 ```ts
-import postgres from '@fastify/postgres'
+import postgres from "@fastify/postgres";
 
 await fastify.register(postgres, {
-  connectionString: process.env.POSTGRES_URL
-})
+  connectionString: process.env.POSTGRES_URL,
+});
 
-fastify.get('/now', async function () {
-  const { rows } = await this.pg.query('select now()')
-  return rows[0]
-})
+fastify.get("/now", async function () {
+  const { rows } = await this.pg.query("select now()");
+  return rows[0];
+});
 ```
 
 ## 38. @fastify/rate-limit
@@ -817,14 +827,14 @@ fastify.get('/now', async function () {
 示例：
 
 ```ts
-import rateLimit from '@fastify/rate-limit'
+import rateLimit from "@fastify/rate-limit";
 
 await fastify.register(rateLimit, {
   max: 100,
-  timeWindow: '1 minute'
-})
+  timeWindow: "1 minute",
+});
 
-fastify.get('/limited', async () => ({ ok: true }))
+fastify.get("/limited", async () => ({ ok: true }));
 ```
 
 ## 39. @fastify/redis
@@ -838,13 +848,13 @@ fastify.get('/limited', async () => ({ ok: true }))
 示例：
 
 ```ts
-import redis from '@fastify/redis'
+import redis from "@fastify/redis";
 
-await fastify.register(redis, { url: process.env.REDIS_URL })
+await fastify.register(redis, { url: process.env.REDIS_URL });
 
-fastify.get('/cache/:key', async function (request) {
-  return { value: await this.redis.get(request.params.key) }
-})
+fastify.get("/cache/:key", async function (request) {
+  return { value: await this.redis.get(request.params.key) };
+});
 ```
 
 ## 40. @fastify/reply-from
@@ -858,13 +868,13 @@ fastify.get('/cache/:key', async function (request) {
 示例：
 
 ```ts
-import replyFrom from '@fastify/reply-from'
+import replyFrom from "@fastify/reply-from";
 
-await fastify.register(replyFrom)
+await fastify.register(replyFrom);
 
-fastify.get('/upstream/*', async (request, reply) => {
-  return reply.from('http://127.0.0.1:4000' + request.url.replace('/upstream', ''))
-})
+fastify.get("/upstream/*", async (request, reply) => {
+  return reply.from("http://127.0.0.1:4000" + request.url.replace("/upstream", ""));
+});
 ```
 
 ## 41. @fastify/request-context
@@ -878,13 +888,13 @@ fastify.get('/upstream/*', async (request, reply) => {
 示例：
 
 ```ts
-import { fastifyRequestContext, requestContext } from '@fastify/request-context'
+import { fastifyRequestContext, requestContext } from "@fastify/request-context";
 
 await fastify.register(fastifyRequestContext, {
-  defaultStoreValues: request => ({ requestId: request.id })
-})
+  defaultStoreValues: (request) => ({ requestId: request.id }),
+});
 
-fastify.get('/ctx', async () => ({ requestId: requestContext.get('requestId') }))
+fastify.get("/ctx", async () => ({ requestId: requestContext.get("requestId") }));
 ```
 
 ## 42. @fastify/response-validation
@@ -898,13 +908,17 @@ fastify.get('/ctx', async () => ({ requestId: requestContext.get('requestId') })
 示例：
 
 ```ts
-import responseValidation from '@fastify/response-validation'
+import responseValidation from "@fastify/response-validation";
 
-await fastify.register(responseValidation)
+await fastify.register(responseValidation);
 
-fastify.get('/answer', {
-  schema: { response: { 200: { type: 'object', properties: { answer: { type: 'number' } } } } }
-}, async () => ({ answer: 42 }))
+fastify.get(
+  "/answer",
+  {
+    schema: { response: { 200: { type: "object", properties: { answer: { type: "number" } } } } },
+  },
+  async () => ({ answer: 42 }),
+);
 ```
 
 ## 43. @fastify/routes
@@ -918,14 +932,14 @@ fastify.get('/answer', {
 示例：
 
 ```ts
-import routes from '@fastify/routes'
+import routes from "@fastify/routes";
 
-await fastify.register(routes)
+await fastify.register(routes);
 
-fastify.get('/hello', async () => ({ hello: 'world' }))
+fastify.get("/hello", async () => ({ hello: "world" }));
 
-await fastify.ready()
-fastify.log.info([...fastify.routes.keys()])
+await fastify.ready();
+fastify.log.info([...fastify.routes.keys()]);
 ```
 
 ## 44. @fastify/routes-stats
@@ -939,13 +953,13 @@ fastify.log.info([...fastify.routes.keys()])
 示例：
 
 ```ts
-import routesStats from '@fastify/routes-stats'
+import routesStats from "@fastify/routes-stats";
 
-await fastify.register(routesStats, { printInterval: 30000 })
+await fastify.register(routesStats, { printInterval: 30000 });
 
-fastify.get('/__stats__', async function () {
-  return this.stats()
-})
+fastify.get("/__stats__", async function () {
+  return this.stats();
+});
 ```
 
 ## 45. @fastify/schedule
@@ -959,15 +973,12 @@ fastify.get('/__stats__', async function () {
 示例：
 
 ```ts
-import schedule from '@fastify/schedule'
-import { SimpleIntervalJob, Task } from 'toad-scheduler'
+import schedule from "@fastify/schedule";
+import { SimpleIntervalJob, Task } from "toad-scheduler";
 
-await fastify.register(schedule)
+await fastify.register(schedule);
 
-fastify.scheduler.addSimpleIntervalJob(new SimpleIntervalJob(
-  { seconds: 60 },
-  new Task('heartbeat', () => fastify.log.info('tick'))
-))
+fastify.scheduler.addSimpleIntervalJob(new SimpleIntervalJob({ seconds: 60 }, new Task("heartbeat", () => fastify.log.info("tick"))));
 ```
 
 ## 46. @fastify/secure-session
@@ -981,18 +992,18 @@ fastify.scheduler.addSimpleIntervalJob(new SimpleIntervalJob(
 示例：
 
 ```ts
-import secureSession from '@fastify/secure-session'
+import secureSession from "@fastify/secure-session";
 
 await fastify.register(secureSession, {
   secret: process.env.SESSION_SECRET!,
   salt: process.env.SESSION_SALT!,
-  cookie: { path: '/', httpOnly: true, secure: true }
-})
+  cookie: { path: "/", httpOnly: true, secure: true },
+});
 
-fastify.post('/session', async request => {
-  request.session.set('userId', 'u1')
-  return { ok: true }
-})
+fastify.post("/session", async (request) => {
+  request.session.set("userId", "u1");
+  return { ok: true };
+});
 ```
 
 ## 47. @fastify/sensible
@@ -1006,13 +1017,13 @@ fastify.post('/session', async request => {
 示例：
 
 ```ts
-import sensible from '@fastify/sensible'
+import sensible from "@fastify/sensible";
 
-await fastify.register(sensible)
+await fastify.register(sensible);
 
-fastify.get('/missing', async function () {
-  throw this.httpErrors.notFound('resource not found')
-})
+fastify.get("/missing", async function () {
+  throw this.httpErrors.notFound("resource not found");
+});
 ```
 
 ## 48. @fastify/session
@@ -1026,19 +1037,19 @@ fastify.get('/missing', async function () {
 示例：
 
 ```ts
-import cookie from '@fastify/cookie'
-import session from '@fastify/session'
+import cookie from "@fastify/cookie";
+import session from "@fastify/session";
 
-await fastify.register(cookie)
+await fastify.register(cookie);
 await fastify.register(session, {
   secret: process.env.SESSION_SECRET!,
-  cookie: { secure: false }
-})
+  cookie: { secure: false },
+});
 
-fastify.get('/visit', async request => {
-  request.session.set('visited', true)
-  return { visited: request.session.get('visited') }
-})
+fastify.get("/visit", async (request) => {
+  request.session.set("visited", true);
+  return { visited: request.session.get("visited") };
+});
 ```
 
 ## 49. @fastify/sse
@@ -1052,14 +1063,14 @@ fastify.get('/visit', async request => {
 示例：
 
 ```ts
-import sse from '@fastify/sse'
+import sse from "@fastify/sse";
 
-await fastify.register(sse, { heartbeatInterval: 30000 })
+await fastify.register(sse, { heartbeatInterval: 30000 });
 
-fastify.get('/events', { sse: true }, async (request, reply) => {
-  reply.sse.keepAlive()
-  await reply.sse.send({ event: 'ready', data: { ok: true } })
-})
+fastify.get("/events", { sse: true }, async (request, reply) => {
+  reply.sse.keepAlive();
+  await reply.sse.send({ event: "ready", data: { ok: true } });
+});
 ```
 
 ## 50. @fastify/static
@@ -1073,13 +1084,13 @@ fastify.get('/events', { sse: true }, async (request, reply) => {
 示例：
 
 ```ts
-import staticPlugin from '@fastify/static'
-import { join } from 'node:path'
+import staticPlugin from "@fastify/static";
+import { join } from "node:path";
 
 await fastify.register(staticPlugin, {
-  root: join(process.cwd(), 'public'),
-  prefix: '/public/'
-})
+  root: join(process.cwd(), "public"),
+  prefix: "/public/",
+});
 ```
 
 ## 51. @fastify/swagger
@@ -1093,14 +1104,14 @@ await fastify.register(staticPlugin, {
 示例：
 
 ```ts
-import swagger from '@fastify/swagger'
+import swagger from "@fastify/swagger";
 
 await fastify.register(swagger, {
   openapi: {
-    openapi: '3.0.0',
-    info: { title: 'API', version: '1.0.0' }
-  }
-})
+    openapi: "3.0.0",
+    info: { title: "API", version: "1.0.0" },
+  },
+});
 ```
 
 ## 52. @fastify/swagger-ui
@@ -1114,13 +1125,13 @@ await fastify.register(swagger, {
 示例：
 
 ```ts
-import swagger from '@fastify/swagger'
-import swaggerUi from '@fastify/swagger-ui'
+import swagger from "@fastify/swagger";
+import swaggerUi from "@fastify/swagger-ui";
 
 await fastify.register(swagger, {
-  openapi: { openapi: '3.0.0', info: { title: 'API', version: '1.0.0' } }
-})
-await fastify.register(swaggerUi, { routePrefix: '/docs' })
+  openapi: { openapi: "3.0.0", info: { title: "API", version: "1.0.0" } },
+});
+await fastify.register(swaggerUi, { routePrefix: "/docs" });
 ```
 
 ## 53. @fastify/throttle
@@ -1134,13 +1145,13 @@ await fastify.register(swaggerUi, { routePrefix: '/docs' })
 示例：
 
 ```ts
-import throttle from '@fastify/throttle'
+import throttle from "@fastify/throttle";
 
-await fastify.register(throttle, { bytesPerSecond: 1024 * 100 })
+await fastify.register(throttle, { bytesPerSecond: 1024 * 100 });
 
-fastify.get('/download', async (request, reply) => {
-  return reply.send('large content')
-})
+fastify.get("/download", async (request, reply) => {
+  return reply.send("large content");
+});
 ```
 
 ## 54. @fastify/type-provider-json-schema-to-ts
@@ -1154,19 +1165,23 @@ fastify.get('/download', async (request, reply) => {
 示例：
 
 ```ts
-import { JsonSchemaToTsProvider } from '@fastify/type-provider-json-schema-to-ts'
+import { JsonSchemaToTsProvider } from "@fastify/type-provider-json-schema-to-ts";
 
-const typed = fastify.withTypeProvider<JsonSchemaToTsProvider>()
+const typed = fastify.withTypeProvider<JsonSchemaToTsProvider>();
 
-typed.get('/typed', {
-  schema: {
-    querystring: {
-      type: 'object',
-      properties: { name: { type: 'string' } },
-      required: ['name']
-    } as const
-  }
-}, async request => ({ hello: request.query.name }))
+typed.get(
+  "/typed",
+  {
+    schema: {
+      querystring: {
+        type: "object",
+        properties: { name: { type: "string" } },
+        required: ["name"],
+      } as const,
+    },
+  },
+  async (request) => ({ hello: request.query.name }),
+);
 ```
 
 ## 55. @fastify/type-provider-typebox
@@ -1180,16 +1195,20 @@ typed.get('/typed', {
 示例：
 
 ```ts
-import { Type } from '@sinclair/typebox'
-import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
+import { Type } from "@sinclair/typebox";
+import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 
-const typed = fastify.withTypeProvider<TypeBoxTypeProvider>()
+const typed = fastify.withTypeProvider<TypeBoxTypeProvider>();
 
-typed.get('/typebox', {
-  schema: {
-    querystring: Type.Object({ name: Type.String() })
-  }
-}, async request => ({ hello: request.query.name }))
+typed.get(
+  "/typebox",
+  {
+    schema: {
+      querystring: Type.Object({ name: Type.String() }),
+    },
+  },
+  async (request) => ({ hello: request.query.name }),
+);
 ```
 
 ## 56. @fastify/under-pressure
@@ -1203,13 +1222,13 @@ typed.get('/typebox', {
 示例：
 
 ```ts
-import underPressure from '@fastify/under-pressure'
+import underPressure from "@fastify/under-pressure";
 
 await fastify.register(underPressure, {
   maxEventLoopDelay: 1000,
   maxHeapUsedBytes: 1024 * 1024 * 1024,
-  exposeStatusRoute: '/status'
-})
+  exposeStatusRoute: "/status",
+});
 ```
 
 ## 57. @fastify/url-data
@@ -1223,13 +1242,13 @@ await fastify.register(underPressure, {
 示例：
 
 ```ts
-import urlData from '@fastify/url-data'
+import urlData from "@fastify/url-data";
 
-await fastify.register(urlData)
+await fastify.register(urlData);
 
-fastify.get('/raw/*', async request => {
-  return request.urlData()
-})
+fastify.get("/raw/*", async (request) => {
+  return request.urlData();
+});
 ```
 
 ## 58. @fastify/view
@@ -1243,17 +1262,17 @@ fastify.get('/raw/*', async request => {
 示例：
 
 ```ts
-import view from '@fastify/view'
-import ejs from 'ejs'
+import view from "@fastify/view";
+import ejs from "ejs";
 
 await fastify.register(view, {
   engine: { ejs },
-  root: './views'
-})
+  root: "./views",
+});
 
-fastify.get('/page', async (request, reply) => {
-  return reply.view('index.ejs', { title: 'Home' })
-})
+fastify.get("/page", async (request, reply) => {
+  return reply.view("index.ejs", { title: "Home" });
+});
 ```
 
 ## 59. @fastify/vite
@@ -1267,14 +1286,14 @@ fastify.get('/page', async (request, reply) => {
 示例：
 
 ```ts
-import fastifyVite from '@fastify/vite'
+import fastifyVite from "@fastify/vite";
 
 await fastify.register(fastifyVite, {
   root: import.meta.url,
-  dev: process.env.NODE_ENV !== 'production'
-})
+  dev: process.env.NODE_ENV !== "production",
+});
 
-await fastify.vite.ready()
+await fastify.vite.ready();
 ```
 
 ## 60. @fastify/websocket
@@ -1288,15 +1307,15 @@ await fastify.vite.ready()
 示例：
 
 ```ts
-import websocket from '@fastify/websocket'
+import websocket from "@fastify/websocket";
 
-await fastify.register(websocket)
+await fastify.register(websocket);
 
-fastify.get('/ws', { websocket: true }, (socket, request) => {
-  socket.on('message', message => {
-    socket.send(`echo: ${message.toString()}`)
-  })
-})
+fastify.get("/ws", { websocket: true }, (socket, request) => {
+  socket.on("message", (message) => {
+    socket.send(`echo: ${message.toString()}`);
+  });
+});
 ```
 
 ## 61. @fastify/zipkin
@@ -1310,10 +1329,10 @@ fastify.get('/ws', { websocket: true }, (socket, request) => {
 示例：
 
 ```ts
-import zipkin from '@fastify/zipkin'
+import zipkin from "@fastify/zipkin";
 
 await fastify.register(zipkin, {
-  serviceName: 'fastify-api',
-  httpReporterUrl: 'http://127.0.0.1:9411/api/v2/spans'
-})
+  serviceName: "fastify-api",
+  httpReporterUrl: "http://127.0.0.1:9411/api/v2/spans",
+});
 ```

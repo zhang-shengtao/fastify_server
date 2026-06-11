@@ -2,7 +2,7 @@ import fp from "fastify-plugin";
 
 // 请求响应日志记录器
 async function logger(fastify: FastifyInstance) {
-  fastify.addHook("onRequest", (req, reply, done) => {
+  fastify.addHook("preHandler", (req, reply, done) => {
     if (req.url.startsWith("/docs")) return done();
     fastify.log.info({
       method: req.method,
