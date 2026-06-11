@@ -7,6 +7,7 @@ const envSchema = z.object({
   LOG_LARGE_RESPONSE_PAYLOAD: z.coerce.boolean().default(false),
   MYSQL_URL: z.string().min(1),
   REDIS_URL: z.string().min(1),
+  REDIS_PREFIX: z.string().default("PREFIX:"),
   ADMIN_JWT_SECRET: z.string().min(1),
   USER_JWT_SECRET: z.string().min(1),
   JWT_ISSUER_ADMIN: z.string().default("admin-system"),

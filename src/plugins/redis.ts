@@ -6,6 +6,7 @@ import { env } from "@/config/env";
 async function redisPlugin(fastify: FastifyInstance) {
   await fastify.register(fastifyRedis, {
     url: env.REDIS_URL,
+    keyPrefix: env.REDIS_PREFIX,
   });
   try {
     await fastify.redis.ping();
