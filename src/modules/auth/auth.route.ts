@@ -8,6 +8,4 @@ export default async function authRoutes(fastify: FastifyInstance) {
     const token = await authService.login(body.username, body.password);
     return reply.success({ token });
   });
-
-  fastify.post("/api/msg/chat", { schema: chat_schema, sse: true }, async function (request, reply) {});
 }
