@@ -7,7 +7,7 @@ import type {
   RawRequestDefaultExpression,
   RawServerDefault,
 } from "fastify";
-import type { FastifyJwtNamespace, JWT } from "@fastify/jwt";
+import type { JWT } from "@fastify/jwt";
 import type { FastifyRedis } from "@fastify/redis";
 import type { MySql2Database } from "drizzle-orm/mysql2";
 import type { ZodTypeProvider } from "fastify-type-provider-zod";
