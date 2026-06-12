@@ -27,11 +27,9 @@ declare module "@fastify/jwt" {
 }
 
 declare module "fastify" {
-  interface FastifySchema {
-    config?: {
-      is_auth?: boolean;
-      permission?: PermissionCode;
-    };
+  interface FastifyContextConfig {
+    is_auth?: boolean;
+    permission?: PermissionCode;
   }
 
   interface FastifyInstance {

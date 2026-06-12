@@ -58,7 +58,7 @@ function registerCommon(app: FastifyInstance) {
     reply.header("x-request-id", request.id);
   });
   app.decorateReply("success", function success<T>(this: FastifyReply, data: T, message = "success", code = BusinessCode.SUCCESS) {
-    return this.send({ code, message, data, request_id: this.request.id });
+    return this.send({ code, message, data, "x-request-id": this.request.id });
   });
 
   app.decorateReply("errors", function errors(this: FastifyReply, message = "error", code = BusinessCode.INTERNAL_ERROR) {

@@ -3,9 +3,21 @@ import AuthService from "./auth.service";
 
 export default async function authRoutes(fastify: FastifyInstance) {
   const authService = new AuthService(fastify);
-  fastify.post("/admin/auth/login", { schema: login_schema }, async function (request, reply) {
+  fastify.post("/admin/auth/login", { ...login_schema }, async function (request, reply) {
     const body = request.body;
     const token = await authService.login(body.username, body.password);
-    return reply.success({ token });
+    reply.success({ token });
+  });
+
+  fastify.post("/api/msg/chat", { ...chat_schema }, async function (request, reply) {
+    const body = request.body;
+    reply.raw.writeHead(200, {
+      "Content-Type": "text/event-stream; charset=utf-8",
+      "Cache-Control": "no-cache, no-transform",
+      Connection: "keep-alive",
+      "X-Accel-Buffering": "no",
+      "request-id": request.id,
+    });
+    authService.chat(body.name, reply);
   });
 }

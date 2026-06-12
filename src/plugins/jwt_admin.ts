@@ -18,8 +18,11 @@ async function adminJwtPlugin(fastify: FastifyInstance) {
   });
 
   fastify.addHook("preHandler", async (request, reply) => {
+    const { method, url } = request.routeOptions;
+    if (!method || !url) return;
+    if (fastify.hasRoute({ method, url }) === false) return;
     if (!request.url.startsWith("/admin")) return;
-    const config = request.routeOptions.schema?.config;
+    const config = request.routeOptions.config;
     if (config?.is_auth === false) return;
     try {
       const authorization = request.headers.authorization;

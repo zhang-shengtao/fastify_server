@@ -7,6 +7,7 @@ try {
     host: env.HOST,
     port: env.PORT,
   });
+  console.log("启动成功：", `http://locahost:${env.PORT}`);
 } catch (error) {
   app.log.error({ tip: "启动服务失败", error });
   process.exit(1);
