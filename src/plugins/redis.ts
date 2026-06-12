@@ -1,6 +1,5 @@
 import fp from "fastify-plugin";
 import fastifyRedis from "@fastify/redis";
-import type { FastifyInstance } from "fastify";
 import { env } from "@/config/env";
 
 async function redisPlugin(fastify: FastifyInstance) {
