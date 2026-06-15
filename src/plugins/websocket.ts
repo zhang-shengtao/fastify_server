@@ -9,7 +9,7 @@ async function socket(fastify: FastifyInstance) {
       socket.terminate();
     },
     options: {
-      maxPayload: 1048576,
+      maxPayload: 1048576, // 1M缓冲区
       clientTracking: false, // 是否让底层 WebSocket Server 自动维护当前连接的客户端集合。 fastify.websocketServer.clients.forEach
     },
   });
