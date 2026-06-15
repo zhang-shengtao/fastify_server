@@ -20,4 +20,13 @@ export default async function authRoutes(fastify: FastifyInstance) {
     });
     authService.chat(body.name, reply);
   });
+
+  fastify.get("/api/msg/ws", { websocket: true }, function (socket, req) {
+    socket.on("message", async (message) => {
+      console.log("message=>", typeof message.toString());
+    });
+    socket.on("close", (e) => {
+      console.log("close=>", e);
+    });
+  });
 }
