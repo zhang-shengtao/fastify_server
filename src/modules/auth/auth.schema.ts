@@ -1,6 +1,6 @@
 import { responseSchema, errorResponseSchema } from "@/utils";
-import { RouteShorthandOptions } from "fastify";
-import { id } from "zod/locales";
+import { PERMISSIONS } from "@/permissions";
+
 import { string, z } from "zod/v4";
 
 export const login_schema = {
@@ -58,6 +58,7 @@ export const ws_schema = {
   },
   config: {
     is_auth: false, // 禁用全局的认证 验证token
+    permission: PERMISSIONS.SYSTEM_ADMIN_PERMISSION_UPDATE, // 权限标识
   },
 };
 
