@@ -1,4 +1,4 @@
-import { login_schema, chat_schema } from "./auth.schema";
+import { login_schema, chat_schema, ws_schema } from "./auth.schema";
 import type { ChatData } from "./auth.schema";
 import AuthService from "./auth.service";
 
@@ -22,7 +22,7 @@ export default async function authRoutes(fastify: FastifyInstance) {
     authService.chat(body.name, reply);
   });
 
-  fastify.get("/api/msg/ws", { websocket: true, config: { is_auth: false } }, function (socket, req) {
+  fastify.get("/api/msg/ws", { websocket: true, ...ws_schema }, function (socket, req) {
     socket.send(JSON.stringify({ type: "open", id: req.id }));
     socket.on("message", async (message: Buffer) => {
       const msg: ChatData = JSON.parse(message.toString());
