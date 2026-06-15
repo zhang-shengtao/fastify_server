@@ -11,7 +11,9 @@
     "format": "prettier . --write",
     "prepare:hooks": "git config core.hooksPath .githooks",
     "db:push:dev": "dotenv -e .env.dev -- drizzle-kit push",
-    "db:push:prod": "dotenv -e .env.prod -- drizzle-kit push"
+    "db:push:prod": "dotenv -e .env.prod -- drizzle-kit push",
+    "db:seed:permissions:dev": "dotenv -e .env.dev -- tsx seed-permissions.ts",
+    "db:seed:permissions:prod": "dotenv -e .env.prod -- tsx seed-permissions.ts"
   },
   "author": "",
   "license": "ISC",

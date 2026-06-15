@@ -20,6 +20,6 @@
     "types": ["node"],
     "sourceMap": false
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "seed-permissions.ts"],
   "exclude": ["dist", "node_modules", "drizzle.config.ts"]
 }

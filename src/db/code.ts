@@ -7,8 +7,7 @@ export const code = mysqlTable("code", {
   name: varchar("name", { length: 120 }).notNull(), // 权限名称
   status: mysqlEnum("status", ["normal", "disabled", "deleted"]).notNull().default("normal"), // 状态
   description: varchar("description", { length: 255 }), // 权限描述
-  is_bind: boolean("is_bind").notNull().default(false), // 是否绑定了权限点
-  bind_id: int("bind_id").default(0), // 绑定的权限点ID
+  bind_id: int("bind_id"), // 绑定的权限点ID，允许为空
   created_at: timestamp("created_at").defaultNow().notNull(), // 创建时间
   updated_at: timestamp("updated_at").defaultNow().notNull(), // 更新时间
   deleted_at: timestamp("deleted_at"), // 软删除时间

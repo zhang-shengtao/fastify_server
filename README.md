@@ -95,16 +95,20 @@ UPLOAD_MAX_FILE_SIZE=10485760  # 10MB
 
 ## 📦 npm 脚本
 
-| 命令                    | 描述                              |
-| ----------------------- | --------------------------------- |
-| `npm run dev`           | 开发模式 (使用 .env.dev)          |
-| `npm run dev:prod`      | 生产环境开发模式 (使用 .env.prod) |
-| `npm run build`         | 编译 TypeScript 到 JavaScript     |
-| `npm start`             | 启动生产服务器                    |
-| `npm run format`        | 使用 Prettier 格式化代码          |
-| `npm run db:push:dev`   | 推送数据库迁移 (开发)             |
-| `npm run db:push:prod`  | 推送数据库迁移 (生产)             |
-| `npm run prepare:hooks` | 配置 Git hooks                    |
+| 命令                       | 描述                                   |
+| -------------------------- | -------------------------------------- |
+| `npm run dev`              | 开发模式 (使用 .env.dev)               |
+| `npm run dev:prod`         | 生产环境开发模式 (使用 .env.prod)      |
+| `npm run build`            | 编译 TypeScript 到 JavaScript          |
+| `npm start`                | 启动生产服务器                         |
+| `npm run format`           | 使用 Prettier 格式化代码               |
+| `npm run db:push:dev`      | 推送数据库迁移 (开发)                  |
+| `npm run db:push:prod`     | 推送数据库迁移 (生产)                  |
+| `npm run prepare:hooks`    | 配置 Git hooks                         |
+| `db:push:dev`              | 推送数据库表结构使用.env.dev 做配置    |
+| `db:push:prod`             | 推送数据库表结构使用.env.prod 做配置   |
+| `db:seed:permissions:dev`  | 推送权限标识数据 使用 .env.dev 做配置  |
+| `db:seed:permissions:prod` | 推送权限标识数据 使用 .env.prod 做配置 |
 
 ## 🚀 快速开始
 

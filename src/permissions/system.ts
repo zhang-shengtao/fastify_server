@@ -18,15 +18,11 @@ export const SYSTEM_PERMISSION_SEEDS = [
     name: "用户列表",
     description: "查看管理端用户列表",
     scope: "system",
-    is_bind: false,
-    is_bind_id: null,
   },
   {
     code: SYSTEM_PERMISSIONS.SYSTEM_PERMISSION_LIST,
     name: "用户列表1",
     description: "查看管理端用户列表1",
     scope: "system",
-    is_bind: false,
-    is_bind_id: null,
   },
 ] as const;
