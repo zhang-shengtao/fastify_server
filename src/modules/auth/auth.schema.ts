@@ -1,5 +1,7 @@
 import { responseSchema, errorResponseSchema } from "@/utils";
-import { z } from "zod/v4";
+import { RouteShorthandOptions } from "fastify";
+import { id } from "zod/locales";
+import { string, z } from "zod/v4";
 
 export const login_schema = {
   schema: {
@@ -47,3 +49,12 @@ export const chat_schema = {
     is_auth: false, // 禁用全局的认证 验证token
   },
 };
+
+export interface ChatData {
+  type: String;
+  data: {
+    id: String;
+    name: String;
+    message: String;
+  };
+}

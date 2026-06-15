@@ -1,4 +1,5 @@
 import { login_schema, chat_schema } from "./auth.schema";
+import type { ChatData } from "./auth.schema";
 import AuthService from "./auth.service";
 
 export default async function authRoutes(fastify: FastifyInstance) {
@@ -21,12 +22,17 @@ export default async function authRoutes(fastify: FastifyInstance) {
     authService.chat(body.name, reply);
   });
 
-  fastify.get("/api/msg/ws", { websocket: true }, function (socket, req) {
-    socket.on("message", async (message) => {
-      console.log("message=>", typeof message.toString());
+  fastify.get("/api/msg/ws", { websocket: true, config: { is_auth: false } }, function (socket, req) {
+    socket.send(JSON.stringify({ type: "open", id: req.id }));
+    socket.on("message", async (message: Buffer) => {
+      const msg: ChatData = JSON.parse(message.toString());
+      socket.send(JSON.stringify({ ...msg, id: req.id }));
+      if (msg.type === "chat") {
+        socket.close();
+      }
     });
-    socket.on("close", (e) => {
-      console.log("close=>", e);
+    socket.on("close", () => {
+      console.log("close=>", "断开了");
     });
   });
 }
