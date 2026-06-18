@@ -68,9 +68,6 @@ export default class AuthService {
       reply.raw.end();
     }
     console.log("writableEnded=>", reply.raw.destroyed, reply.raw.writableEnded);
-    return () => {
-      is_open = false;
-    };
   }
 }
 
