@@ -23,6 +23,11 @@ export default class AuthService {
   async chat(name: string, reply: FastifyReply) {
     //reply.raw.destroyed = true 客户端断开连接
     //reply.raw.writableEnded = true 服务端这一侧已经调用过 reply.raw.end()
+    let is_open: Boolean = true;
+    reply.raw.socket?.on("close", () => {
+      console.log("close=>", "断开了");
+      is_open = false;
+    });
     await reply.raw.write(
       sseFormat({
         id: "-1",
@@ -33,9 +38,10 @@ export default class AuthService {
       }),
     );
     for (let i = 0; i <= 10; i++) {
-      if (reply.raw.destroyed) break;
+      // if (reply.raw.destroyed) break;
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      if (reply.raw.destroyed) break;
+      // if (reply.raw.destroyed) break;
+      if (is_open === false) break;
       console.log("writableEnded=>" + i, reply.raw.destroyed, reply.raw.writableEnded, Date.now());
       await reply.raw.write(
         sseFormat({
@@ -62,6 +68,9 @@ export default class AuthService {
       reply.raw.end();
     }
     console.log("writableEnded=>", reply.raw.destroyed, reply.raw.writableEnded);
+    return () => {
+      is_open = false;
+    };
   }
 }
 

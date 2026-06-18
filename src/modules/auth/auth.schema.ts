@@ -1,7 +1,6 @@
 import { responseSchema, errorResponseSchema } from "@/utils";
 import { PERMISSIONS } from "@/permissions";
-
-import { string, z } from "zod/v4";
+import { z } from "zod/v4";
 
 export const login_schema = {
   schema: {
