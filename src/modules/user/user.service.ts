@@ -9,7 +9,7 @@ export default class UserService {
   async get_user_list(query: PageQuery) {
     const where = and();
     return await paginate(query, {
-      list: async ({ limit, offset }) =>
+      list: ({ limit, offset }) =>
         this.fastify.db
           .select({
             user_id: admin_user.user_id,
@@ -23,7 +23,7 @@ export default class UserService {
           .orderBy(desc(admin_user.user_id))
           .limit(limit)
           .offset(offset),
-      total: async () => this.fastify.db.select({ total: count() }).from(admin_user).where(where),
+      total: () => this.fastify.db.select({ total: count() }).from(admin_user).where(where),
     });
   }
 }
